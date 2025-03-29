@@ -7,14 +7,14 @@ import (
 
 func main() {
 	router := gin.Default()
-	router.GET("/ping", func(c *gin.Context) {
+	router.GET("/api/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
 	})
-	router.GET("/albums", album.GetAlbums)
-	router.GET("/albums/:id", album.GetAlbumByID)
-	router.POST("/albums", album.PostAlbums)
+	router.GET("/api/albums", album.GetAlbums)
+	router.GET("/api/albums/:id", album.GetAlbumByID)
+	router.POST("/api/albums", album.PostAlbums)
 
 	router.Run(":2112")
 }
