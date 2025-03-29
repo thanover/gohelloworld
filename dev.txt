@@ -1,0 +1,6 @@
+starting the db on docker:
+docker run -d -p 27017:27017 --name mongodb mongo:latest
+
+stopping the db:
+docker stop mongodb
+docker rm $(docker stop $(docker ps -a -q --filter ancestor=mongodb --format="{{.ID}}"))

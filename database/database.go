@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"log"
+	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -17,8 +18,16 @@ func ConnectDB() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Replace with your MongoDB connection string
-	clientOptions := options.Client().ApplyURI("mongodb://tom:password123@gotest-mongodb-kcuixf:27017")
+	// Get MongoDB URI from environment variable
+	mongoURI := os.Getenv("MONGO_URI")
+
+	// Use default connection string if environment variable is not set
+	if mongoURI == "" {
+		mongoURI = "mongodb://localhost:27017"
+		log.Println("Warning: MONGO_URI environment variable not set, using default connection string")
+	}
+
+	clientOptions := options.Client().ApplyURI(mongoURI)
 	var err error
 
 	Client, err = mongo.Connect(ctx, clientOptions)
