@@ -1,25 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"github.com/gin-gonic/gin"
+	"github.com/thanover/gohelloworld/album"
 )
 
 
-
 func main() {
-	// Create a new HTTP server
-	server := &http.Server{
-		Addr:    ":8080",
-		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			// Handle the request
-			fmt.Fprintf(w, "Hello, World!")
-		}),
-	}
+	router := gin.Default()
+	router.GET("/ping", func(c *gin.Context) {
+    c.JSON(200, gin.H{
+      "message": "pong",
+    })
+  })
+	router.GET("/albums", album.GetAlbums)
+	router.GET("/albums/:id", album.GetAlbumByID)
+	router.POST("/albums", album.PostAlbums)
 
-	// Start the server
-	fmt.Println("Starting server on :8080")
-	if err := server.ListenAndServe(); err != nil {
-		fmt.Println("Error starting server:", err)
-	}
+	router.Run("localhost:8080")
 }
